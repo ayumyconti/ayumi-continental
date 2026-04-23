@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AYUMI CONTINENTAL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@300;400;600&family=Noto+Sans+JP:wght@200;300;400&family=Noto+Serif+JP:wght@200;300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --ivory: #f1eceb;
+    --gray: #e8e4e0;
+    --terra: #cc5e35;
+    --terra-dark: #a84928;
+    --black: #0d0d0d;
+    --dark: #111111;
+    --mid: #888080;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 200;
+    overflow-x: hidden;
+  }
+
+  /* =====================
+     HERO
+  ===================== */
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  .hero-panel {
+    position: relative;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  /* プレースホルダー — Studioで写真に差し替え */
+  .hero-panel-left {
+    background: linear-gradient(135deg, #1a1210 0%, #2d1f1a 50%, #0d0d0d 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 60px 48px;
+  }
+
+  .hero-panel-right {
+    background: linear-gradient(135deg, #0d0d0d 0%, #1e1410 50%, #2a1a12 100%);
+  }
+
+  /* 写真が入ったときのオーバーレイ */
+  .hero-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    pointer-events: none;
+  }
+
+  .hero-photo-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .hero-photo-hint span {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 24px;
+  }
+
+  /* 中央オーバーレイナビ */
+  .hero-nav-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 420px;
+  }
+
+  .hero-nav-item {
+    background: var(--white);
+    padding: 18px 40px;
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    color: var(--black);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    transition: background 0.3s ease, color 0.3s ease;
+    border-bottom: 1px solid var(--gray);
+  }
+
+  .hero-nav-item:last-child { border-bottom: none; }
+
+  .hero-nav-item .jp {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 9px;
+    font-weight: 200;
+    letter-spacing: 3px;
+    color: var(--mid);
+    position: absolute;
+    top: 8px;
+    left: 40px;
+  }
+
+  .hero-nav-item:hover {
+    background: var(--terra);
+    color: var(--white);
+  }
+
+  .hero-nav-item:hover .jp { color: rgba(255,255,255,0.6); }
+
+  /* ロゴ */
+  .site-logo {
+    position: absolute;
+    top: 32px;
+    left: 40px;
+    z-index: 20;
+    text-decoration: none;
+  }
+
+  .site-logo-text {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    letter-spacing: 5px;
+    color: var(--white);
+    display: block;
+  }
+
+  .site-logo-sub {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 9px;
+    font-weight: 200;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+
+  /* 右側縦書きSTORE */
+  .side-store {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    writing-mode: vertical-rl;
+    background: var(--terra);
+    color: var(--white);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    padding: 20px 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+  }
+
+  .side-store:hover { background: var(--terra-dark); }
+
+  /* =====================
+     SECTION TITLES
+  ===================== */
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+
+  .section-title-bar {
+    width: 3px;
+    height: 32px;
+    background: var(--terra);
+    flex-shrink: 0;
+  }
+
+  .section-title-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 9px;
+    font-weight: 200;
+    letter-spacing: 3px;
+    color: var(--mid);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .section-title-en {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 300;
+    letter-spacing: 8px;
+    color: var(--black);
+  }
+
+  /* =====================
+     PHILOSOPHY
+  ===================== */
+  .philosophy {
+    background: var(--ivory);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    min-height: 70vh;
+  }
+
+  .philosophy-img {
+    background: #1a1210;
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+  }
+
+  .philosophy-img .photo-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .philosophy-img .photo-hint span {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 20px;
+    text-transform: uppercase;
+  }
+
+  .philosophy-img-right {
+    background: #0f0d0c;
+  }
+
+  .philosophy-content {
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .philosophy-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(14px, 1.4vw, 18px);
+    font-weight: 300;
+    line-height: 2.2;
+    color: var(--black);
+    margin-bottom: 32px;
+  }
+
+  .philosophy-quote-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(16px, 1.6vw, 20px);
+    color: var(--terra);
+    line-height: 1.8;
+    margin-bottom: 32px;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-color: rgba(204,94,53,0.4);
+  }
+
+  .philosophy-author {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--mid);
+    text-align: right;
+  }
+
+  /* =====================
+     PRODUCTS
+  ===================== */
+  .products {
+    background: var(--dark);
+    padding: 100px 48px;
+    position: relative;
+  }
+
+  .products .section-title-en { color: var(--white); }
+  .products .section-title-jp { color: rgba(255,255,255,0.3); }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+  }
+
+  .product-card {
+    background: var(--white);
+    aspect-ratio: 3/4;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .product-card:nth-child(2) { margin-top: 40px; }
+  .product-card:nth-child(4) { margin-top: 20px; }
+  .product-card:nth-child(6) { margin-top: 30px; }
+  .product-card:nth-child(7) { margin-top: -20px; }
+
+  .product-img-area {
+    position: absolute;
+    inset: 0;
+    background: var(--gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-img-area span {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(0,0,0,0.2);
+    text-transform: uppercase;
+  }
+
+  .product-info {
+    position: relative;
+    z-index: 1;
+    background: var(--white);
+    padding: 16px;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .product-info { transform: translateY(-4px); }
+
+  .product-serial {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--terra);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .product-name {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--black);
+  }
+
+  .product-status {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--terra);
+    margin-top: 4px;
+  }
+
+  /* =====================
+     FAQ
+  ===================== */
+  .faq {
+    background: var(--gray);
+    padding: 100px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .faq-left {
+    position: relative;
+  }
+
+  .faq-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: #1a1210;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .faq-img .photo-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .faq-img .photo-hint span {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 20px;
+    text-transform: uppercase;
+  }
+
+  .faq-right {
+    padding-top: 20px;
+  }
+
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 0;
+  }
+
+  .faq-item {
+    background: var(--white);
+    padding: 28px 24px;
+  }
+
+  .faq-q {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--terra);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .faq-q-text {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+
+  .faq-a {
+    font-size: 11px;
+    font-weight: 200;
+    line-height: 1.9;
+    color: var(--mid);
+  }
+
+  /* =====================
+     FOOTER
+  ===================== */
+  footer {
+    background: var(--white);
+    padding: 80px 48px 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 6px;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--mid);
+    margin-bottom: 4px;
+  }
+
+  .footer-company {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(136,128,128,0.5);
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .footer-nav a {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--mid);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+
+  .footer-nav a:hover { color: var(--terra); }
+
+  .footer-bottom {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--gray);
+    padding-top: 24px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(136,128,128,0.4);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* =====================
+     SCROLL REVEAL
+  ===================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* =====================
+     MOBILE
+  ===================== */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; height: auto; min-height: 100vh; }
+    .hero-panel-left { display: none; }
+    .hero-panel-right { min-height: 100vh; }
+    .hero-nav-overlay { width: 90vw; }
+    .hero-nav-item { font-size: 20px; padding: 14px 24px; }
+    .hero-nav-item .jp { left: 24px; }
+    .philosophy { grid-template-columns: 1fr; }
+    .philosophy-img, .philosophy-img-right { min-height: 200px; }
+    .philosophy-content { padding: 48px 24px; }
+    .products { padding: 60px 24px; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .product-card { margin-top: 0 !important; }
+    .faq { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .faq-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; padding: 48px 24px; }
+    .footer-nav { align-items: flex-start; }
+    .side-store { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 右側縦書きSTORE -->
+<a href="https://ayumicontinental.base.shop" class="side-store" target="_blank">Online Store</a>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+
+  <!-- ロゴ -->
+  <a href="#" class="site-logo">
+    <span class="site-logo-text">AYUMI CONTINENTAL</span>
+    <span class="site-logo-sub">Each piece carries a world.</span>
+  </a>
+
+  <!-- 左パネル（作品写真を入れる） -->
+  <div class="hero-panel hero-panel-left">
+    <div class="hero-photo-hint">
+      <span>作品写真をここに</span>
+    </div>
+  </div>
+
+  <!-- 右パネル（着用写真を入れる） -->
+  <div class="hero-panel hero-panel-right">
+    <div class="hero-photo-hint">
+      <span>着用写真をここに</span>
+    </div>
+  </div>
+
+  <!-- 中央ナビオーバーレイ -->
+  <nav class="hero-nav-overlay">
+    <a href="#philosophy" class="hero-nav-item">
+      <span class="jp">哲学</span>
+      PHILOSOPHY
+    </a>
+    <a href="#products" class="hero-nav-item">
+      <span class="jp">商品</span>
+      COLLECTIONS
+    </a>
+    <a href="#faq" class="hero-nav-item">
+      <span class="jp">よくある質問</span>
+      FAQ
+    </a>
+  </nav>
+
+</section>
+
+<!-- ===================== PHILOSOPHY ===================== -->
+<section class="philosophy" id="philosophy">
+
+  <div class="philosophy-img">
+    <div class="photo-hint"><span>作品写真</span></div>
+  </div>
+
+  <div class="philosophy-content reveal">
+    <div class="section-title-wrap">
+      <div class="section-title-bar"></div>
+      <div>
+        <span class="section-title-jp">哲学</span>
+        <span class="section-title-en">PHILOSOPHY</span>
+      </div>
+    </div>
+
+    <p class="philosophy-quote">
+      異素材が交わる場所で生まれる、一点もののアート。<br>
+      レザー、糸、ガラス、石、炎——<br>
+      すべて手仕事で、すべて世界にひとつだけ。<br><br>
+      使う・身にまとう・灯すことで<br>
+      アートは完成していく。
+    </p>
+
+    <p class="philosophy-quote-en">
+      Hand work × AI era — a new way to share art with the world.
+    </p>
+
+    <p class="philosophy-author">
+      野田あゆみ — Founder &amp; Artist / OJAS Inc.
+    </p>
+  </div>
+
+  <div class="philosophy-img philosophy-img-right">
+    <div class="photo-hint"><span>着用写真</span></div>
+  </div>
+
+</section>
+
+<!-- ===================== PRODUCTS ===================== -->
+<section class="products" id="products">
+  <div class="section-title-wrap reveal">
+    <div class="section-title-bar"></div>
+    <div>
+      <span class="section-title-jp">商品</span>
+      <span class="section-title-en">COLLECTIONS</span>
+    </div>
+  </div>
+
+  <div class="products-grid">
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Painted Edition</div>
+        <div class="product-name">No.014 / 2025 / Wallet</div>
+        <div class="product-price">¥7,800</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Painted Edition</div>
+        <div class="product-name">No.013 / 2025 / Wallet</div>
+        <div class="product-price">¥7,800</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Metallic Weave</div>
+        <div class="product-name">Silver / Neon Code</div>
+        <div class="product-price">¥15,000</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Gemlight Collection</div>
+        <div class="product-name">Crystal Candle</div>
+        <div class="product-price">¥4,300</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Painted Edition</div>
+        <div class="product-name">No.012 / 2025 / Wallet</div>
+        <div class="product-price">¥7,800</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Joe's Style</div>
+        <div class="product-name">Glass Cabochon Earrings</div>
+        <div class="product-price">¥5,800</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Metallic Weave</div>
+        <div class="product-name">Gold / Neon Code</div>
+        <div class="product-price">¥15,000</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-area"><span>商品写真</span></div>
+      <div class="product-info">
+        <div class="product-serial">Painted Edition</div>
+        <div class="product-name">No.011 / 2025 / Card Case</div>
+        <div class="product-price">¥5,800</div>
+        <div class="product-status">SOLD OUT</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center; margin-top:60px;" class="reveal">
+    <a href="https://ayumicontinental.base.shop" target="_blank" style="
+      display:inline-block;
+      border: 1px solid var(--terra);
+      color: var(--terra);
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 5px;
+      padding: 16px 48px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    " onmouseover="this.style.background='#cc5e35';this.style.color='#fff'"
+       onmouseout="this.style.background='transparent';this.style.color='#cc5e35'">
+      View All Items
+    </a>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="faq" id="faq">
+
+  <div class="faq-left reveal">
+    <div class="faq-img">
+      <div class="photo-hint"><span>作品写真</span></div>
+    </div>
+  </div>
+
+  <div class="faq-right">
+    <div class="section-title-wrap reveal">
+      <div class="section-title-bar"></div>
+      <div>
+        <span class="section-title-jp">よくある質問</span>
+        <span class="section-title-en">FAQ</span>
+      </div>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <div class="faq-q">Q.</div>
+        <div class="faq-q-text">送料について教えてください</div>
+        <div class="faq-a">お買い上げ合計5,000円以上の場合、全国送料無料でお届けします。それ以下の場合、350円で定形外郵便となります。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Q.</div>
+        <div class="faq-q-text">お問い合わせ方法を教えてください</div>
+        <div class="faq-a">InstagramのDM、またはBASEのメッセージ機能よりご連絡ください。2営業日以内にご返信いたします。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Q.</div>
+        <div class="faq-q-text">一点物とはどういう意味ですか？</div>
+        <div class="faq-a">すべての作品に通しシリアルナンバーが入り、同じ作品は二度と生まれません。世界にひとつだけの証明です。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Q.</div>
+        <div class="faq-q-text">オーダーメイドは可能ですか？</div>
+        <div class="faq-a">現在は既製品のみのご提供となっております。今後の展開についてはSNSでお知らせいたします。</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div>
+    <div class="footer-logo">AYUMI CONTINENTAL</div>
+    <div class="footer-tagline">Each piece carries a world — handcrafted by Ayumi.</div>
+    <div class="footer-company">© 2025 OJAS Inc. All rights reserved. Tokyo, Japan</div>
+  </div>
+  <nav class="footer-nav">
+    <a href="#philosophy">Philosophy</a>
+    <a href="#products">Collections</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://ayumicontinental.base.shop" target="_blank">Online Store</a>
+    <a href="#">Instagram</a>
+  </nav>
+  <div class="footer-bottom">
+    <span>AYUMI CONTINENTAL / OJAS Inc.</span>
+    <span>Tokyo, Japan</span>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
